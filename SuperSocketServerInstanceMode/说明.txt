@@ -1,0 +1,3 @@
+﻿安装 SuperSocket.Engine
+安装后会加入文件夹Config，存的是log4net，可以删除不用
+supersocket.cmd和supersocket.sh可以删除，不影响使用

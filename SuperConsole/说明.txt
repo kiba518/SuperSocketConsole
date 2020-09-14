@@ -1,0 +1,7 @@
+﻿安装 SuperSocket.Engine
+安装后会加入文件夹Config，存的是log4net，可以删除不用
+supersocket.cmd和supersocket.sh可以删除，不影响使用
+SocketServer 服务
+SocketSession 会话 
+SocketCommand 命令，继承CommandBase，接受到一SocketCommand字符串开头的命令，会进入到这里
+App.config里的superSocket-servers-server-serverType属性有两个参数，第一个是服务类的完全限定名，第二个是服务类的命名空间
