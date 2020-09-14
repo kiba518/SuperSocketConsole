@@ -47,17 +47,15 @@ namespace SuperSocketServerInstanceMode
         } 
         static void appServer_NewSessionConnected(AppSession session)
         {
-            Console.WriteLine($"服务端得到来自客户端的连接成功"); 
-            var count = appServer.GetAllSessions().Count();
-            Console.WriteLine("会话数量~~" + count);
+            var count = appServer.SessionCount;
+            Console.WriteLine($"服务端得到来自客户端的连接成功 ，当前会话数量：" + count);  
             //这里也可以向会话的stream里写入数据，如果在这里向流写入数据，则客户端需要在Send之前先接收一次，不然的话，Send后接收的就是这条数据了
             session.Send("连接成功");
         } 
         static void appServer_NewSessionClosed(AppSession session, CloseReason aaa)
         {
-            Console.WriteLine($"服务端 失去 来自客户端的连接" + session.SessionID + aaa.ToString());
-            var count = appServer.GetAllSessions().Count();
-            Console.WriteLine(count);
+            var count = appServer.SessionCount;
+            Console.WriteLine($"服务端 失去 来自客户端的连接" + session.SessionID + aaa.ToString()+ " 当前会话数量：" + count); 
         } 
         static void appServer_NewRequestReceived(AppSession session, StringRequestInfo requestInfo)
         {

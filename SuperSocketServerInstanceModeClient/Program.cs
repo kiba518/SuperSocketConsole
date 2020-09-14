@@ -16,29 +16,29 @@ namespace SuperSocketServerInstanceModeClient
         {
             #region socket创建实例 这里把发送和接收给分离了
 
-            //socketClient = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            //IPAddress ip = IPAddress.Parse("127.0.0.1");
-            //IPEndPoint point = new IPEndPoint(ip, 5180);
-            ////进行连接
-            //socketClient.Connect(point); 
+            socketClient = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ip = IPAddress.Parse("127.0.0.1");
+            IPEndPoint point = new IPEndPoint(ip, 5180);
+            //进行连接
+            socketClient.Connect(point);
 
-            //#region 不停的接收服务器端发送的消息
-            //Thread thread = new Thread(Recive);
-            //thread.IsBackground = true;
-            //thread.Start();
-            //#endregion
+            #region 不停的接收服务器端发送的消息
+            Thread thread = new Thread(Recive);
+            thread.IsBackground = true;
+            thread.Start();
+            #endregion
 
 
-            //#region 不停的给服务器发送数据
-            //Thread thread2 = new Thread(Send);
-            //thread2.IsBackground = true;
-            //thread2.Start();
-            //#endregion
+            #region 不停的给服务器发送数据
+            Thread thread2 = new Thread(Send);
+            thread2.IsBackground = true;
+            thread2.Start();
+            #endregion
 
             #endregion
 
-            #region Tcp创建实例
-            TCPConnect("127.0.0.1", 5180);
+            #region Tcp创建实例 测试SuperSocketServerInstanceMode 因为实例服务例子里在连接时写入了数据 
+            //TCPConnect("127.0.0.1", 5180);
             #endregion 
             Console.ReadKey();
         }
@@ -75,7 +75,7 @@ namespace SuperSocketServerInstanceModeClient
                 param1 = i + 1;
                 param2 = i + 2;
                 Console.WriteLine($"Send  i:{i}  param1:{param1} param2:{param2}");
-                string msg = $"ADD {param1} {param2}" + "\r\n";
+                string msg = $"SocketCommand {param1} {param2}" + "\r\n";
                 Console.WriteLine($"msg:{msg}");
                 var buffter = Encoding.Default.GetBytes(msg);
                 var temp = socketClient.Send(buffter);
@@ -93,18 +93,17 @@ namespace SuperSocketServerInstanceModeClient
                 client.Connect(server, port); 
                 Byte[] data = System.Text.Encoding.Default.GetBytes(message); 
                 String responseData = String.Empty; 
-                NetworkStream stream = client.GetStream();
-
+                NetworkStream stream = client.GetStream(); 
                 byte[] buffer = new byte[1024 * 1024 * 2];
                 Int32 bytes = stream.Read(buffer, 0, buffer.Length);
                 responseData = System.Text.Encoding.Default.GetString(buffer, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData); 
+                Console.WriteLine("接收服务器在连接事件中写入的数据: {0}", responseData); 
                 stream.Write(data, 0, data.Length); 
-                Console.WriteLine("Send: {0}", message); 
+                Console.WriteLine("发送数据: {0}", message); 
                 data = new Byte[256]; 
                 bytes = stream.Read(buffer, 0, buffer.Length);
                 responseData = System.Text.Encoding.Default.GetString(buffer, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData); 
+                Console.WriteLine("接收返回值: {0}", responseData); 
                 stream.Close();
                 client.Close();
             }

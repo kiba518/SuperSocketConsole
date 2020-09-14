@@ -18,8 +18,7 @@ namespace SuperSocketServerSessionMode
             {
                 Console.WriteLine(DateTime.Now + ":Socket初始化失败\r\n");
                 return;
-            }
-
+            } 
             var result = bootstrap.Start();
             foreach (var server in bootstrap.AppServers)
             {
@@ -34,8 +33,7 @@ namespace SuperSocketServerSessionMode
 
                 }
             }
-           Console.ReadKey();
-           
+            Console.ReadKey(); 
             #endregion
         }
     }
