@@ -39,18 +39,15 @@ namespace SuperSocketServerInstanceModeClient
 
             #region Tcp创建实例
             TCPConnect("127.0.0.1", 5180);
-            #endregion
-
+            #endregion 
             Console.ReadKey();
         }
 
         /// <summary>
         /// 接收消息
-        /// </summary>
-        /// <param name="o"></param>
+        /// </summary> 
         static void Recive()
-        {
-            //  为什么用telnet客户端可以，但这个就不行。
+        { 
             while (true)
             {
                 //获取发送过来的消息
@@ -82,8 +79,7 @@ namespace SuperSocketServerInstanceModeClient
                 Console.WriteLine($"msg:{msg}");
                 var buffter = Encoding.Default.GetBytes(msg);
                 var temp = socketClient.Send(buffter);
-                Console.WriteLine($"Send  发送的字节数:{temp} ");
-               
+                Console.WriteLine($"Send  发送的字节数:{temp} "); 
                 Thread.Sleep(1000);
             }
 
@@ -92,40 +88,23 @@ namespace SuperSocketServerInstanceModeClient
         {
             string message = $"ADD kiba518 518" + "\r\n";
             try
-            {
-               
-                
+            { 
                 TcpClient client = new TcpClient();
-                client.Connect(server, port);
-
-               
-                Byte[] data = System.Text.Encoding.Default.GetBytes(message);
-
-                String responseData = String.Empty;
-
+                client.Connect(server, port); 
+                Byte[] data = System.Text.Encoding.Default.GetBytes(message); 
+                String responseData = String.Empty; 
                 NetworkStream stream = client.GetStream();
 
                 byte[] buffer = new byte[1024 * 1024 * 2];
                 Int32 bytes = stream.Read(buffer, 0, buffer.Length);
                 responseData = System.Text.Encoding.Default.GetString(buffer, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
-
-
-
-               
-                stream.Write(data, 0, data.Length);
-
-                Console.WriteLine("Send: {0}", message);
-
-              
-                data = new Byte[256];
-
-              
+                Console.WriteLine("Received: {0}", responseData); 
+                stream.Write(data, 0, data.Length); 
+                Console.WriteLine("Send: {0}", message); 
+                data = new Byte[256]; 
                 bytes = stream.Read(buffer, 0, buffer.Length);
                 responseData = System.Text.Encoding.Default.GetString(buffer, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
-
-                
+                Console.WriteLine("Received: {0}", responseData); 
                 stream.Close();
                 client.Close();
             }
@@ -136,9 +115,7 @@ namespace SuperSocketServerInstanceModeClient
             catch (SocketException e)
             {
                 Console.WriteLine("SocketException: {0}", e.Message);
-            }
-
-         
+            } 
             Console.Read();
         }
     }

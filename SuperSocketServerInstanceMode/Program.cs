@@ -17,72 +17,52 @@ namespace SuperSocketServerInstanceMode
             serverConfig.Port = 5180;
             serverConfig.TextEncoding = "gb2312";
             serverConfig.MaxConnectionNumber = 1000;
-            appServer = new AppServer();
-              
+            serverConfig.MaxRequestLength = 102400;
+            serverConfig.Mode = SocketMode.Tcp;
+            appServer = new AppServer(); 
             //配置
             if (!appServer.Setup(serverConfig))  
             {
-                Console.WriteLine("配置失败!");
-                Console.ReadKey();
+                Console.WriteLine("配置失败!"); 
                 return;
             } 
             //启动
             if (!appServer.Start())
             {
-                Console.WriteLine("启动失败!");
-                Console.ReadKey();
+                Console.WriteLine("启动失败!"); 
                 return;
-            }
-
-
-            Console.WriteLine("启动成功，按Q退出!");
-
-        
+            } 
+            Console.WriteLine("启动成功，按Q退出!"); 
             appServer.NewSessionConnected += new SessionHandler<AppSession>(appServer_NewSessionConnected);
-            appServer.SessionClosed += appServer_NewSessionClosed;
-
-          
-            appServer.NewRequestReceived += new RequestHandler<AppSession, StringRequestInfo>(appServer_NewRequestReceived);
-
+            appServer.SessionClosed += appServer_NewSessionClosed; 
+            appServer.NewRequestReceived += new RequestHandler<AppSession, StringRequestInfo>(appServer_NewRequestReceived); 
             while (Console.ReadKey().KeyChar != 'q')
-            {
-                Console.WriteLine();
+            { 
                 continue;
-            }
-
+            } 
             //停止
-            appServer.Stop();
-
+            appServer.Stop(); 
             Console.WriteLine("服务已停止");
             Console.ReadKey();
-        }
-
-        //1.
+        } 
         static void appServer_NewSessionConnected(AppSession session)
         {
-            Console.WriteLine($"服务端得到来自客户端的连接成功");
-
+            Console.WriteLine($"服务端得到来自客户端的连接成功"); 
             var count = appServer.GetAllSessions().Count();
             Console.WriteLine("会话数量~~" + count);
             //这里也可以向会话的stream里写入数据，如果在这里向流写入数据，则客户端需要在Send之前先接收一次，不然的话，Send后接收的就是这条数据了
             session.Send("连接成功");
-        }
-
+        } 
         static void appServer_NewSessionClosed(AppSession session, CloseReason aaa)
         {
             Console.WriteLine($"服务端 失去 来自客户端的连接" + session.SessionID + aaa.ToString());
             var count = appServer.GetAllSessions().Count();
             Console.WriteLine(count);
-        }
-
-        //2.
+        } 
         static void appServer_NewRequestReceived(AppSession session, StringRequestInfo requestInfo)
         {
             Console.WriteLine($"Key:" + requestInfo.Key + $" Body:" + requestInfo.Body);
             session.Send("我是返回值：" + requestInfo.Body);
-        }
-
-
-
+        } 
     }
 }
